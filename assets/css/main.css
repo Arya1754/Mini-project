@@ -144,7 +144,19 @@
     border-radius: 50px;
     transition: var(--transition-2);
   }
+  .btn-primary {
+    background-color: #4CAF50; 
+    color: #fff;
+    padding: 10px 20px; 
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
   
+  .btn-primary:hover {
+    background-color: #154717; 
+  }
   .btn ion-icon { font-size: 1.6rem; }
   
   .btn-primary:is(:hover, :focus) { --bg-color: var(--green-pigment); }

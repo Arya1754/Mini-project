@@ -535,6 +535,7 @@
     z-index: 6;
     visibility: hidden;
     transition: 0.25s var(--cubic-in);
+    overflow-y: auto; 
   }
   
   .side-panel.active {

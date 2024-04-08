@@ -232,36 +232,6 @@
 .top-product-card:is(:hover, :focus-within) .btn { opacity: 1; }
 
 
-
-
-
-/*-----------------------------------*\
-  #PARTNER
-\*-----------------------------------*/
-
-.partner { background-color: var(--emerald); }
-
-.partner .section-subtitle { color: var(--white); }
-
-.partner .section-title {
-  color: var(--white);
-  margin-block-end: 40px;
-}
-
-.partner-logo {
-  max-width: max-content;
-  margin-inline: auto;
-}
-
-.partner-item {
-  min-width: 100%;
-  scroll-snap-align: center;
-}
-
-
-
-
-
 /*-----------------------------------*\
   #TESTIMONIALS
 \*-----------------------------------*/

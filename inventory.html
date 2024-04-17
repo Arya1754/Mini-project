@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmEazy - Inventory</title>
+    <link rel="stylesheet" href=".\assets\css\inventory.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="logo">Farm<span class="highlight">Eazy</span></h1>
+        <nav class="navbar">
+            <a href="./farmerdashboard.html">Home</a>
+            <a href="./farmerabout.html">About</a>
+            <a href="./Inventory.html" class="active">Inventory</a>
+            <a href="./My Transactions.html">Transactions</a>
+            <a href="./farmerprofile.html">Profile</a>
+            <a href="./login.html">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="add-item">
+            <h2>Add New Item</h2>
+            <form action="#" method="POST">
+                <input type="text" name="item_name" placeholder="Item Name" required>
+                <input type="number" name="quantity" placeholder="Quantity" required>
+                <input type="text" name="price" placeholder="Price per Unit" required>
+                <button type="submit">Add Item</button>
+            </form>
+        </section>
+
+        <section class="inventory-list">
+            <h2>Current Inventory</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Price per Unit</th>
+                        <th>Total Value</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tomatoes</td>
+                        <td>100</td>
+                        <td>$0.50</td>
+                        <td>$50</td>
+                        <td>
+                            <button>Edit</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <!-- Additional rows here -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 FarmEazy. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

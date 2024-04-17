@@ -5,18 +5,71 @@ body, html {
 }
 
 .header {
-    background-color: #4CAF50;
-    color: white;
-    text-align: center;
+    background-color: white;
+    color: black;
+    text-align: left;
     padding: 10px 20px;
 }
+.add-item{
+    background-color: #367737;
+    border-radius: 1px;
+    
+}
+.add-item h2{
+    margin-left: 80px;
+}
+
+.navbar {
+    background-color: var(--gunmetal-1);
+    position: fixed;
+    top: 0;
+    left: -300px;
+    max-width: 300px;
+    width: 100%;
+    min-height: 100%;
+    padding: 100px 13px 30px;
+    box-shadow: var(--shadow-3);
+    z-index: 2;
+    visibility: hidden;
+    transition: 0.25s var(--cubic-in);
+  }
+  
+  .navbar.active {
+    transform: translateX(300px);
+    visibility: visible;
+    transition: 0.5s var(--cubic-out);
+  }
+  
+  .nav-close-btn {
+    color: var(--white_50);
+    font-size: 2.8rem;
+    border: 1px solid;
+    padding: 5px;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    transition: var(--transition-1);
+  }
+  
+  .nav-close-btn:is(:hover, :focus) { color: var(--white); }
+  
+  .navbar-link {
+    color: var(--white);
+    font-size: var(--fs-6);
+    font-weight: var(--fw-700);
+    padding: 17px;
+    border-radius: var(--radius-4);
+  }
+  
+  .navbar-link:is(:hover, :focus) { background-color: var(--white_10); }
+  
 
 .logo {
     font-size: 24px;
 }
 
 .logo .highlight {
-    color: #FFD700;
+    color: hsl(152, 95%, 39%);
 }
 
 .navbar {
@@ -24,7 +77,7 @@ body, html {
 }
 
 .navbar a {
-    color: white;
+    color: black;
     text-decoration: none;
     padding: 10px 20px;
     display: inline-block;

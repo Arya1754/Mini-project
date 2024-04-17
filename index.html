@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FarmEazy - Quality organic fruit & vegetables.</title>
+  <title>FarmEazy - HomePage</title>
   <link rel="stylesheet" href="./assets/css/main.css">
   <link rel="stylesheet" href="./assets/css/home.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,222 +15,125 @@
     rel="stylesheet">
 </head>
 <body id="top">
-  <header class="header" data-header>
-    <div class="nav-wrapper">
-      <div class="container">
-        <h1 class="h1">
-          <a href="index.html" class="logo">Farm<span class="span">Eazy</span></a>
-        </h1>
+    <header class="header" data-header>
+        <div class="nav-wrapper">
+          <div class="container">
+            <h1 class="h1">
+              <a href="index.html" class="logo">Farm<span class="span">Eazy</span></a>
+            </h1>
+    
+            <button class="nav-open-btn" aria-label="Open Menu" data-nav-open-btn>
+              <ion-icon name="menu-outline"></ion-icon>
+            </button>
+    
+            <nav class="navbar" data-navbar>
+    
+              <button class="nav-close-btn" aria-label="Close Menu" data-nav-close-btn>
+                <ion-icon name="close-outline"></ion-icon>
+              </button>
+    
+              <ul class="navbar-list">
+    
+                <li>
+                  <a href="./index.html" class="navbar-link">Home</a>
+                </li>
+    
+                <li>
+                  <a href="./about.html" class="navbar-link">About</a>
+                </li>
+    
+                <li>
+                  <a href="./shop.html" class="navbar-link">Shop</a>
+                </li>
 
-        <button class="nav-open-btn" aria-label="Open Menu" data-nav-open-btn>
-          <ion-icon name="menu-outline"></ion-icon>
-        </button>
-
-        <nav class="navbar" data-navbar>
-
-          <button class="nav-close-btn" aria-label="Close Menu" data-nav-close-btn>
+                <li>
+                  <a href="profile.html" class="navbar-link">Profile</a>
+                </li>
+    
+                <li>
+                  <a href="./login.html" class="navbar-link">Logout</a>
+                </li>
+    
+              </ul>
+    
+            </nav>
+    
+            <div class="header-action">
+    
+              <div class="search-wrapper" data-search-wrapper>
+    
+                <button class="header-action-btn" aria-label="Toggle search" data-search-btn>
+                  <ion-icon name="search-outline" class="search-icon"></ion-icon>
+                  <ion-icon name="close-outline" class="close-icon"></ion-icon>
+                </button>
+    
+                <div class="input-wrapper">
+                  <input type="search" name="search" placeholder="Search here" class="search-input">
+    
+                  <button class="search-submit" aria-label="Submit search">
+                    <ion-icon name="search-outline"></ion-icon>
+                  </button>
+                </div>
+    
+              </div>
+    
+              <button class="header-action-btn" aria-label="Open whishlist" data-panel-btn="whishlist">
+                <ion-icon name="heart-outline"></ion-icon>
+    
+               
+              </button>
+    
+              <button class="header-action-btn" aria-label="Open shopping cart" data-panel-btn="cart">
+                <ion-icon name="basket-outline"></ion-icon>
+    
+              
+              </button>
+    
+            </div>
+    
+          </div>
+        </div>
+    
+      </header>
+    
+      <aside class="aside">
+    
+        <div class="side-panel" data-side-panel="whishlist">
+    
+          <button class="panel-close-btn" aria-label="Close whishlist" data-panel-btn="whishlist">
             <ion-icon name="close-outline"></ion-icon>
           </button>
-
-          <ul class="navbar-list">
-
-            <li>
-              <a href="./index.html" class="navbar-link">Home</a>
-            </li>
-
-            <li>
-              <a href="./about.html" class="navbar-link">About</a>
-            </li>
-
-            <li>
-              <a href="shop.html" class="navbar-link">Shop</a>
-            </li>
-            <li>
-              <a href="./profile.html" class="navbar-link">Profile</a>
-            </li>
-
-            <li>
-              <a href="./login.html" class="navbar-link">Logout</a>
-            </li>
-
-          </ul>
-
-        </nav>
-
-        <div class="header-action">
-
-          <div class="search-wrapper" data-search-wrapper>
-
-            <button class="header-action-btn" aria-label="Toggle search" data-search-btn>
-              <ion-icon name="search-outline" class="search-icon"></ion-icon>
-              <ion-icon name="close-outline" class="close-icon"></ion-icon>
-            </button>
-
-            <div class="input-wrapper">
-              <input type="search" name="search" placeholder="Search here" class="search-input">
-
-              <button class="search-submit" aria-label="Submit search">
-                <ion-icon name="search-outline"></ion-icon>
-              </button>
-            </div>
-
-          </div>
-
-          <button class="header-action-btn" aria-label="Open whishlist" data-panel-btn="whishlist">
-            <ion-icon name="heart-outline"></ion-icon>
-
-            <data class="btn-badge" value="3">03</data>
-          </button>
-
-          <button class="header-action-btn" aria-label="Open shopping cart" data-panel-btn="cart">
-            <ion-icon name="basket-outline"></ion-icon>
-
-            <data class="btn-badge" value="2">02</data>
-          </button>
-        </div>
-
-      </div>
-    </div>
-
-  </header>
-
-  <aside class="aside">
     
-    <div class="side-panel" data-side-panel="whishlist">
+          <ul class="panel-list">
+    
+            
+          </ul>
+    
+          
+        </div>
+    
+        <div class="side-panel" data-side-panel="cart">
+    
+          <button class="panel-close-btn" aria-label="Close cart" data-panel-btn="cart">
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+    
+          <ul class="panel-list">
 
-      <button class="panel-close-btn" aria-label="Close whishlist" data-panel-btn="whishlist">
-        <ion-icon name="close-outline"></ion-icon>
-      </button>
-
-      <ul class="panel-list">
-
-        <li class="panel-item">
-          <a href="#" class="panel-card">
-
-            <figure class="item-banner">
-              <img src="./assets/images/top-product-1.png" width="46" height="46" loading="lazy"
-                alt="Bright Side Vegetarian">
-            </figure>
-
-            <div>
-              <p class="item-title">Fresh Orange</p>
-              <button class="btn-primary">Add to Cart</button>
-            </div>
-
-            <button class="item-close-btn" aria-label="Remove item">
-              <ion-icon name="close-outline"></ion-icon>
-            </button>
-
-          </a>
-        </li>
-
-        <li class="panel-item">
-          <a href="#" class="panel-card">
-
-            <figure class="item-banner">
-              <img src="./assets/images/lettucef.png" width="46" height="46" loading="lazy" alt="Eco Vegetable">
-            </figure>
-
-            <div>
-              <p class="item-title">Lettuce</p>
-
-              <button class="btn-primary">Add to Cart</button>
-            </div>
-
-            <button class="item-close-btn" aria-label="Remove item">
-              <ion-icon name="close-outline"></ion-icon>
-            </button>
-
-          </a>
-        </li>
-
-        <li class="panel-item">
-          <a href="#" class="panel-card">
-
-            <figure class="item-banner">
-              <img src="./assets/images/patatof.png" width="46" height="46" loading="lazy"
-                alt="House of Veggies">
-            </figure>
-
-            <div>
-              <p class="item-title">Potato</p>
-
-              <button class="btn-primary">Add to Cart</button>
-            </div>
-
-            <button class="item-close-btn" aria-label="Remove item">
-              <ion-icon name="close-outline"></ion-icon>
-            </button>
-
-          </a>
-        </li>
-
-      </ul>
-
-
-    </div>
-    <div class="side-panel" data-side-panel="cart">
-
-      <button class="panel-close-btn" aria-label="Close cart" data-panel-btn="cart">
-        <ion-icon name="close-outline"></ion-icon>
-      </button>
-
-      <ul class="panel-list">
-
-        <li class="panel-item">
-          <a href="#" class="panel-card">
-
-            <figure class="item-banner">
-              <img src="./assets/images/product-2.png" width="46" height="46" loading="lazy"
-                alt="Bright Side Vegetarian">
-            </figure>
-
-            <div>
-              <p class="item-title">Key Lime</p>
-
-              <span class="item-value">R.s 85.00x1</span>
-            </div>
-
-            <button class="item-close-btn" aria-label="Remove item">
-              <ion-icon name="close-outline"></ion-icon>
-            </button>
-
-          </a>
-        </li>
-
-        <li class="panel-item">
-          <a href="#" class="panel-card">
-
-            <figure class="item-banner">
-              <img src="./assets/images/product-3.png" width="46" height="46" loading="lazy" alt="Eco Vegetable">
-            </figure>
-
-            <div>
-              <p class="item-title">Fresh Watermelon</p>
-
-              <span class="item-value">R.s 85.00x2</span>
-            </div>
-
-            <button class="item-close-btn" aria-label="Remove item">
-              <ion-icon name="close-outline"></ion-icon>
-            </button>
-
-          </a>
-        </li>
-
-      </ul>
-
-      <div class="subtotal">
-        <p class="subtotal-text">Subtotal:</p>
-
-        <data class="subtotal-value" value="215.14">R.s 255.00</data>
-      </div>
-
-      <a href="./cart.html" class="panel-btn">Proceed to Pay</a>
-
-    </div>
-
-  </aside>
+    
+          </ul>
+    
+          <div class="subtotal">
+            <p class="subtotal-text">Subtotal:</p>
+    
+            <data class="subtotal-value" value="215.14">R.s 00.00</data>
+          </div>
+    
+          <a href="./cart.html" class="panel-btn">Proceed to Pay</a>
+    
+        </div>
+    
+      </aside>
   <main>
     <article>
       <section class="hero">

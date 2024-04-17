@@ -3,8 +3,16 @@
   padding: 50px 0;
   
 }
-.confirmation-content{
+.confirmation-content h1{
+  font-size:2em ;
+  margin-bottom:3% ;
+}
+.confirmation-content p{
+  font-size:1.5em ;
   margin-bottom:2% ;
+}
+.confirmation-content{
+  margin-bottom:3% ;
 }
 #submitReview {
   display: block; /* Change display to block to center the button */

@@ -48,7 +48,8 @@
     height: 130px;
     border-radius: 50%;
     margin-bottom: 15px;
-    margin-left: 38%;
+    margin-left: auto; /* Center align */
+    margin-right: auto; /* Center align */
 }
 
 .profile-picture img {
@@ -157,6 +158,7 @@ margin-top: 0%;
     background-color: black;
 }
 
+
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .info {
@@ -168,6 +170,24 @@ margin-top: 0%;
     .employment,
     .budget {
         width: 100%;
-        margin-right: 0; 
+        margin-right:10% ;
     }
+    .info {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .right-section {
+        width: 100%;
+      
+    }
+
+    .profile-picture {
+        margin-left: auto; /* Center align */
+        margin-right: auto; /* Center align */
+    }
+
 }
+ 
+
+

@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var addToWishlistButtons = document.querySelectorAll('.product-btn');
     var purchaseButton = document.querySelector('.panel-btn');
     var removeItemButtons = document.querySelectorAll('.item-close-btn');
-    var quantityInputs = document.querySelectorAll('.item-quantity'); // Define quantityInputs here
+    var quantityInputs = document.querySelectorAll('.item-quantity');
 
     addToCartButtons.forEach(function (button) {
         button.addEventListener('click', addToCart);
@@ -42,7 +42,13 @@ function removeItemButton(event) {
     var parentElement = buttonClick.closest('.panel-item'); 
     var confirmed = window.confirm('Do You Want To Remove Element From Cart');
     if (confirmed) {
-        parentElement.remove();
+        var inputElement = parentElement.querySelector('.item-quantity');
+        var quantity = parseInt(inputElement.value);
+        if (quantity > 1) {
+            inputElement.value = quantity - 1;
+        } else {
+            parentElement.remove();
+        }
         updateCart();
     }
 }
@@ -54,8 +60,6 @@ function updatequantity(event) {
     }
     updateCart();
 }
-
-
 
 function addToCart(event) {
     var button = event.target;
@@ -88,7 +92,6 @@ function addToCart(event) {
                 var inputElement = cartItem.querySelector('.item-quantity');
                 var quantity = parseInt(inputElement.value) + 1;
                 inputElement.value = quantity;
-                
                 updateCart();
             }
         }
@@ -98,7 +101,6 @@ function addToCart(event) {
         addItemToCart(title, pay, imageSrc);
     }
 }
-
 
 function addItemToCart(title, pay, imageSrc) {
     var cartRow = document.createElement('li');
@@ -150,11 +152,13 @@ function addToWishlist(event) {
 
     if (!itemAlreadyInWishlist) {
         addItemToWishlistPanel(title, pay, imageSrc);
+        alert('Item added to wishlist.');
     }
 }
 
 function addItemToWishlistPanel(title, pay, imageSrc) {
-    var wishRow = document.createElement('li');
+    var payNumeric = parseFloat(pay.replace(/[^\d.]/g, '').replace(/^\.|\.+$/g, ""));
+     var wishRow = document.createElement('li');
     wishRow.classList.add('panel-item');
 
     var wishItemList = document.querySelector('[data-side-panel="whishlist"] .panel-list');
@@ -199,7 +203,7 @@ function addItemToWishlistPanel(title, pay, imageSrc) {
         });
 
         if (!itemAlreadyInCart) {
-            addItemToCart(title, pay, imageSrc);
+            addItemToCart(title, payNumeric, imageSrc); // Use payNumeric instead of pay
             var alertMessage = 'The item "' + title + '" has been added to your cart.';
             alert(alertMessage);
             wishRow.remove();
@@ -208,26 +212,21 @@ function addItemToWishlistPanel(title, pay, imageSrc) {
     });
 }
 
+
 function updateCart() {
     var cartItems = document.querySelectorAll('[data-side-panel="cart"] .panel-item');
     var subtotal = 0;
-
     cartItems.forEach(function (cartItem) {
         var priceElement = cartItem.querySelector('.price');
         var quantityElement = cartItem.querySelector('.item-quantity');
-        var price = parseFloat(priceElement.textContent.replace('R.s ', ''));
+        console.log(priceElement, quantityElement); // Log priceElement and quantityElement to debug
+        var price = parseFloat(priceElement.textContent);
         var quantity = parseInt(quantityElement.value);
-
-        // Debugging
-        console.log("Price:", price);
-        console.log("Quantity:", quantity);
-
-        // Check for NaN
-        if (!isNaN(price) && !isNaN(quantity)) {
-            subtotal += price * quantity;
-        }
+        subtotal += price * quantity;
     });
 
-    document.querySelector('.subtotal-value').textContent = 'R.s ' + subtotal.toFixed(2);
+    var subtotalElement = document.querySelector('.subtotal');
+    if (subtotalElement) {
+        subtotalElement.textContent = 'Subtotal      R.s  ' + subtotal.toFixed(2);
+    }
 }
-

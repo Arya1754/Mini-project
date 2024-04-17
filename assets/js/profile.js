@@ -20,4 +20,5 @@ document.getElementById('upload-btn').addEventListener('click', function() {
     };
 
     reader.readAsDataURL(file);
+    
 });

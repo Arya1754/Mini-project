@@ -5,10 +5,11 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FarmEazy - Order Purchase</title>
+  <title>FarmEazy - Update Profile</title>
   <link rel="stylesheet" href="./assets/css/main.css">
-  <link rel="stylesheet" href="./assets/css/order-purchase.css">
   <link rel="stylesheet" href="./assets/css/home.css">
+  <link rel="stylesheet" href="./assets/css/profile.css">
+  <link rel="stylesheet" href="./assets/css/update.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -81,13 +82,13 @@
               <button class="header-action-btn" aria-label="Open whishlist" data-panel-btn="whishlist">
                 <ion-icon name="heart-outline"></ion-icon>
     
-                <data class="btn-badge" value="3">03</data>
+               
               </button>
     
               <button class="header-action-btn" aria-label="Open shopping cart" data-panel-btn="cart">
                 <ion-icon name="basket-outline"></ion-icon>
     
-                <data class="btn-badge" value="2">02</data>
+              
               </button>
     
             </div>
@@ -127,7 +128,7 @@
           <div class="subtotal">
             <p class="subtotal-text">Subtotal:</p>
     
-            <data class="subtotal-value" value="215.14">R.s 255.00</data>
+            <data class="subtotal-value" value="215.14">R.s 00.00</data>
           </div>
     
           <a href="./cart.html" class="panel-btn">Proceed to Pay</a>
@@ -135,40 +136,53 @@
         </div>
     
       </aside>
-      <main>
-        <section class="order-confirmation">
-          <div class="container">
-            <div class="confirmation-content">
-              <h1>THANK YOU FOR YOUR PURCHASE!</h1>
-              <p>Your order has been successfully placed. We appreciate your business with us.</p>
-            </div>
-              <div class="review">
-                  <h2>Give us your feedback</h2>
-                    <div class="stars">
-                      <input type="radio" id="star5" name="rating" value="5">
-                      <label for="star5"></label>
-                      <input type="radio" id="star4" name="rating" value="4">
-                      <label for="star4"></label>
-                      <input type="radio" id="star3" name="rating" value="3">
-                      <label for="star3"></label>
-                      <input type="radio" id="star2" name="rating" value="2">
-                      <label for="star2"></label>
-                      <input type="radio" id="star1" name="rating" value="1">
-                      <label for="star1"></label>
-                    </div>
-                    <textarea id="reviewText" placeholder="Write your review..."></textarea>
-                    <button id="submitReview">Submit Review</button>
+
+  <main class="container">
+      <section class="info">
+          <div class="user">
+            <div class="profile-section">
+              <div class="profile-picture" id="profile-picture">
+                  <img src="assets\images\Profilepicture.jpg" alt="Profile Picture">
+              </div>
+              <form id="upload-form">
+                  <div class="form-group">
+                      <label for="image">Change Profile Picture:</label>
+                      <input type="file" name="image" id="image">
                   </div>
+                  <div class="form-group">
+                    <button type="button" id="upload-btn" class="upload-btn">Upload</button>
+                  </div>
+              </form>
+              <form id="update-profile-form">
+                <h2>Update Profile</h2>
+                <div class="form-group">
+                  <label for="fullName">Full Name:</label>
+                  <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                  <label for="contactNo">Phone Number:</label>
+                  <input type="tel" id="contactNo" name="contactNo" required>
+                </div>
+                <div class="form-group">
+                  <label for="emailId">Email ID:</label>
+                  <input type="email" id="emailId" name="emailId" required>
+                </div>
+                <div class="form-group">
+                  <label for="address">Address:</label>
+                  <input type="text" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="Password">Password:</label>
+                    <input type="password" id="password" name="Password" required>
+                  </div>
+                  <button type="submit" class="submit-btn">Update Profile</button>
+              </form>
+                 
               </div>
-              <div class="confirmation-actions">
-                <a href="shop.html" class="btn btn-primary">Continue Shopping</a>
-                <a href="./profile.html" class="btn btn-secondary">View Order History</a>
-              </div>
-          </div>
-        </section>
-      </main>
+          </section>
+
+  </main>
     
-      
       <footer class="footer">
         <div class="footer-bottom">
           <div class="container">
@@ -200,8 +214,9 @@
             </a>
 
     <script src="./assets/js/script.js"></script>
-    <script src="./assets/js/star.js"></script>
-
+    <script src="./assets/js/profile.js"></script>
+    <script src="./assets/js/update.js"></script>
+    
   <!-- 
     - ionicon link
   -->

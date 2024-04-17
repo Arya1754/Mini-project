@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var addToWishlistButtons = document.querySelectorAll('.product-btn');
     var purchaseButton = document.querySelector('.panel-btn');
     var removeItemButtons = document.querySelectorAll('.item-close-btn');
+    var quantityInputs = document.querySelectorAll('.item-quantity'); // Define quantityInputs here
 
     addToCartButtons.forEach(function (button) {
         button.addEventListener('click', addToCart);
@@ -18,7 +19,11 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', removeItemButton);
     });
 
-    updateCart(); // Initially update the cart
+    quantityInputs.forEach(function(input) {
+        input.addEventListener('input', updatequantity);
+    });
+
+    updateCart(); 
 });
 
 function purchase(event) {
@@ -28,14 +33,13 @@ function purchase(event) {
 
     if (confirmed && parentLink.tagName === 'A') {
         parentLink.href = './cart.html';
-
         window.location.href = parentLink.href;
     }
 }
 
 function removeItemButton(event) {
     var buttonClick = event.target;
-    var parentElement = buttonClick.closest('.panel-item'); // Get the closest parent list item
+    var parentElement = buttonClick.closest('.panel-item'); 
     var confirmed = window.confirm('Do You Want To Remove Element From Cart');
     if (confirmed) {
         parentElement.remove();
@@ -43,12 +47,26 @@ function removeItemButton(event) {
     }
 }
 
+function updatequantity(event) {
+    var input = event.target;
+    if (isNaN(input.value) || input.value <= 0) {
+        input.value = 1;
+    }
+    updateCart();
+}
+
+
+
 function addToCart(event) {
     var button = event.target;
     var productCard = button.closest('.product-card');
+    console.log('Product Card:', productCard);
     var titleElement = productCard.querySelector('.card-title');
+    console.log('Title Element:', titleElement);
     var payElement = productCard.querySelector('.price');
+    console.log('Pay Element:', payElement);
     var imageElement = productCard.querySelector('.card-banner img');
+    console.log('Image Element:', imageElement);
 
     if (!titleElement || !payElement || !imageElement) {
         console.error('Required elements not found');
@@ -56,7 +74,7 @@ function addToCart(event) {
     }
 
     var title = titleElement.innerText;
-    var pay = payElement.innerText;
+    var pay = parseFloat(payElement.textContent.match(/\d+\.\d+/)); // Extracting numeric value from payElement
     var imageSrc = imageElement.src;
 
     var cartItems = document.querySelectorAll('[data-side-panel="cart"] .panel-item');
@@ -67,11 +85,10 @@ function addToCart(event) {
             itemAlreadyInCart = true;
             var confirmed = window.confirm('This item is already in your cart. Do you want to add it again?');
             if (confirmed) {
-                var inputElement = cartItem.querySelector('.item-value');
+                var inputElement = cartItem.querySelector('.item-quantity');
                 var quantity = parseInt(inputElement.value) + 1;
                 inputElement.value = quantity;
-                // Update the total price for the item
-                cartItem.querySelector('.item-price').innerText = 'R.s ' + (parseFloat(pay.replace('R.s ', '')) * quantity).toFixed(2);
+                
                 updateCart();
             }
         }
@@ -82,10 +99,10 @@ function addToCart(event) {
     }
 }
 
+
 function addItemToCart(title, pay, imageSrc) {
     var cartRow = document.createElement('li');
     cartRow.classList.add('panel-item');
-
     var cartItemList = document.querySelector('[data-side-panel="cart"] .panel-list');
 
     var cartRowContent = `
@@ -95,9 +112,9 @@ function addItemToCart(title, pay, imageSrc) {
         </figure>
         <div>
             <p class="item-title">${title}</p>
-            <input type="number" class="item-value" value="1">
+            <input type="number" class="item-quantity" value="1">
+            <div class="price">${pay}</div> 
         </div>
-        <div class="item-value">${pay}</div> 
         <button class="item-close-btn" aria-label="Remove item">
             <ion-icon name="close-outline"></ion-icon>
         </button>
@@ -112,7 +129,7 @@ function addItemToCart(title, pay, imageSrc) {
 
 function addToWishlist(event) {
     var button = event.target;
-    var productCard = button.closest('.product-card'); // Find the closest parent with class "product-card"
+    var productCard = button.closest('.product-card');
     var titleElement = productCard.querySelector('.card-title');
     var payElement = productCard.querySelector('.price');
     var imageElement = productCard.querySelector('.card-banner img');
@@ -149,7 +166,7 @@ function addItemToWishlistPanel(title, pay, imageSrc) {
         </figure>
         <div>
             <p class="item-title">${title}</p>
-            <span class="item-value">${pay}</span>
+            <span class="price">${pay}</span>
             <button class="btn btn-primary">Add to Cart</button>
         </div>
         <button class="item-close-btn" aria-label="Remove item">
@@ -162,7 +179,6 @@ function addItemToWishlistPanel(title, pay, imageSrc) {
     wishRow.querySelector('.item-close-btn').addEventListener('click', removeItemButton );
 
     wishItemList.appendChild(wishRow);
-
    
     var addToCartButton = wishRow.querySelector('.btn.btn-primary');
     addToCartButton.addEventListener('click', function() {
@@ -174,7 +190,7 @@ function addItemToWishlistPanel(title, pay, imageSrc) {
                 itemAlreadyInCart = true;
                 var confirmed = window.confirm('This item is already in your cart. Do you want to add it again?');
                 if (confirmed) {
-                    var inputElement = cartItem.querySelector('.item-value');
+                    var inputElement = cartItem.querySelector('.item-quantity');
                     var quantity = parseInt(inputElement.value) + 1;
                     inputElement.value = quantity;
                     updateCart();
@@ -187,24 +203,31 @@ function addItemToWishlistPanel(title, pay, imageSrc) {
             var alertMessage = 'The item "' + title + '" has been added to your cart.';
             alert(alertMessage);
             wishRow.remove();
+            updateCart();
         }
     });
-
 }
 
 function updateCart() {
-    var cartRows = document.querySelectorAll('[data-side-panel="cart"] .panel-item');
-    var total = 0;
+    var cartItems = document.querySelectorAll('[data-side-panel="cart"] .panel-item');
+    var subtotal = 0;
 
-    cartRows.forEach(function (cartRow) {
-        var cartPrice = cartRow.querySelector('.item-value').innerText;
-        var cartQuantity = parseInt(cartRow.querySelector('.item-value').value); // Get the current quantity
+    cartItems.forEach(function (cartItem) {
+        var priceElement = cartItem.querySelector('.price');
+        var quantityElement = cartItem.querySelector('.item-quantity');
+        var price = parseFloat(priceElement.textContent.replace('R.s ', ''));
+        var quantity = parseInt(quantityElement.value);
 
-        var price = parseFloat(cartPrice.replace('R.s ', '')) || 0; // Handle NaN or null values
+        // Debugging
+        console.log("Price:", price);
+        console.log("Quantity:", quantity);
 
-        total += price * cartQuantity; // Update the total based on the current quantity
+        // Check for NaN
+        if (!isNaN(price) && !isNaN(quantity)) {
+            subtotal += price * quantity;
+        }
     });
 
-    total = Math.round(total * 100) / 100;
-    document.querySelector('[data-side-panel="cart"] .subtotal-value').innerText = 'R.s ' + total;
+    document.querySelector('.subtotal-value').textContent = 'R.s ' + subtotal.toFixed(2);
 }
+

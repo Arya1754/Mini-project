@@ -141,6 +141,23 @@
             <div class="confirmation-content">
               <h2 class="confirmation-title">THANK YOU FOR YOUR PURCHASE!</h2>
               <p class="confirmation-message">Your order has been successfully placed. We appreciate your business with us.</p>
+              <div class="review">
+                <div >Give us your feedback</div>
+                <div class="stars">
+                  <input type="radio" id="star5" name="rating" value="5">
+                  <label for="star5"></label>
+                  <input type="radio" id="star4" name="rating" value="4">
+                  <label for="star4"></label>
+                  <input type="radio" id="star3" name="rating" value="3">
+                  <label for="star3"></label>
+                  <input type="radio" id="star2" name="rating" value="2">
+                  <label for="star2"></label>
+                  <input type="radio" id="star1" name="rating" value="1">
+                  <label for="star1"></label>
+                </div>
+                <textarea id="reviewText" placeholder="Write your review..."></textarea>
+                <button id="submitReview">Submit Review</button>
+              </div>
             </div>
             <div class="confirmation-actions">
               <a href="shop.html" class="btn btn-primary">Continue Shopping</a>
@@ -182,7 +199,7 @@
             </a>
 
     <script src="./assets/js/script.js"></script>
-    <script src="./assets/js/addcart.js"></script>
+    <script src="./assets/js/star.js"></script>
 
   <!-- 
     - ionicon link

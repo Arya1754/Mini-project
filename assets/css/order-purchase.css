@@ -38,4 +38,21 @@
   .btn-primary:hover {
     background-color: #0056b3;
   }
+  .stars {
+    display: flex;
+    justify-content: center; /* Align items horizontally */
+    margin-bottom: 10px;
+  }
+  
+
+  
+  .stars label {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    margin: 0 5px;
+  }
+  
+
+  
   

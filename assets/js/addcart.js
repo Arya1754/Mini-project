@@ -1,4 +1,30 @@
+import { initializeApp } from 'firebase/app';
+import {
+    getFirestore ,collection,onSnapshot,
+    addDoc,deleteDoc,doc,
+    query,where,
+    orderBy,serverTimestamp,
+    getDoc,updateDoc
+} from 'firebase/firestore'
+
 document.addEventListener('DOMContentLoaded', function () {
+
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyB0pGEBA01P1KON0fE1wfKRjejnDj2OCuY",
+    authDomain: "miniproject-8c47c.firebaseapp.com",
+    projectId: "miniproject-8c47c",
+    storageBucket: "miniproject-8c47c.appspot.com",
+    messagingSenderId: "178975701060",
+    appId: "1:178975701060:web:b4a5a45a02c0bdfc2c6411",
+    measurementId: "G-7J80SKPLFV"
+  };
+
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
     var addToCartButtons = document.querySelectorAll('.btn.btn-primary');
     var addToWishlistButtons = document.querySelectorAll('.product-btn');
     var purchaseButton = document.querySelector('.panel-btn');
@@ -49,6 +75,7 @@ function removeItemButton(event) {
         } else {
             parentElement.remove();
         }
+        removeFromFirestore(parentElement); // Remove from Firestore
         updateCart();
     }
 }
@@ -99,6 +126,7 @@ function addToCart(event) {
 
     if (!itemAlreadyInCart) {
         addItemToCart(title, pay, imageSrc);
+        saveToFirestore(title, pay, imageSrc); // Save to Firestore
     }
 }
 
@@ -153,6 +181,7 @@ function addToWishlist(event) {
     if (!itemAlreadyInWishlist) {
         addItemToWishlistPanel(title, pay, imageSrc);
         alert('Item added to wishlist.');
+        saveToFirestore(title, pay, imageSrc); // Save to Firestore
     }
 }
 
@@ -208,25 +237,55 @@ function addItemToWishlistPanel(title, pay, imageSrc) {
             alert(alertMessage);
             wishRow.remove();
             updateCart();
+            saveToFirestore(title, payNumeric, imageSrc); // Save to Firestore
         }
     });
 }
+function removeFromFirestore(db,title) {
+    db.collection("cart").where("title", "==", title)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                doc.ref.delete();
+            });
+        })
+        .catch((error) => {
+            console.error("Error removing document: ", error);
+        });
+}
 
+function saveToFirestore(db,title, pay, quantity, subtotal, imageSrc) {
+    db.collection("cart").add({
+        title: title,
+        pay: pay,
+        quantity: quantity,
+        subtotal: subtotal,
+        imageSrc: imageSrc
+    })
+    .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+    })
+    .catch((error) => {
+        console.error("Error adding document: ", error);
+    });
+}
 
 function updateCart() {
     var cartItems = document.querySelectorAll('[data-side-panel="cart"] .panel-item');
-    var subtotal = 0;
+    var itemSubtotal = 0;
+
     cartItems.forEach(function (cartItem) {
         var priceElement = cartItem.querySelector('.price');
         var quantityElement = cartItem.querySelector('.item-quantity');
-        console.log(priceElement, quantityElement); // Log priceElement and quantityElement to debug
         var price = parseFloat(priceElement.textContent);
+        var title = cartItem.querySelector('.item-title').innerText;
         var quantity = parseInt(quantityElement.value);
-        subtotal += price * quantity;
+        var imageSrc = cartItem.querySelector('.item-banner img').src;
+        itemSubtotal += price * quantity;
     });
 
     var subtotalElement = document.querySelector('.subtotal');
     if (subtotalElement) {
-        subtotalElement.textContent = 'Subtotal      R.s  ' + subtotal.toFixed(2);
+        subtotalElement.textContent = 'Subtotal      R.s  ' + itemSubtotal.toFixed(2);
     }
 }

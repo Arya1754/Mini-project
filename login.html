@@ -2,151 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FarmEazy-Login</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: url("assets\images\bg1.webp") center/cover no-repeat fixed;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .overlay-box {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            height: 70%;
-            transform: translate(-50%, -50%);
-            width: 70%;
-            background-color: #fff;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.17);
-            border-radius: 10px;
-            display: flex;
-            overflow: hidden;
-        }
-
-        .left-side {
-            flex: 3;
-            overflow: hidden;
-        }
-
-        .left-side img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .right-side {
-            flex: 2;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative; /* Added positioning for absolute elements */
-        }
-
-        .brand-text {
-            font-size: 36px;
-            color: black;
-            position: absolute;
-            top:25px;
-            left: 75%;
-            transform: translate(-50%, -50%);
-        }
-        .brandtext {
-            font-size: 36px;
-            color: darkgreen;
-            position: absolute;
-            top:25px;
-            left: 82.2%;
-            transform: translate(-50%, -50%);
-        }
-
-        .slogan {
-            font-size: 16px;
-            color: green;
-            position: absolute;
-            top: 62px;
-            left: 78%;
-            transform: translate(-50%, -50%);
-        }
-
-        .login-form {
-            max-width: 300px;
-            width: 100%;
-            text-align: center;
-            margin-top: 20px; /* Adjusted margin to push down the login form */
-        }
-
-        .login-form input {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .login-form button {
-            width: calc(100% - 20px);
-            padding: 10px;
-            background: linear-gradient(to right, #4CAF50, #2E7D32); /* Gradient from green to darker green */
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .forgot-password {
-            margin-top: 10px;
-            color: green;
-            text-decoration: none;
-            text-align: right;
-        }
-
-        .copyright {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            font-size: 12px;
-            color: #999;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login Page</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="assets\css\logginsignup.css">
 </head>
 <body>
 
-<div class="overlay-box">
-    <div class="brand-text">
-        <b> Farm </b>
-    </div>
-    <div class="brandtext">
-        <b> Eazy </b>
-    </div>
-    <div class="slogan">
-        Your Farm-to-Fork Solution
-    </div>
-    <div class="left-side">
-        <img src="assets\images\login.jpg" alt="Company Logo">
-    </div>
-    <div class="right-side">
-        <div class="login-form">
-            <h2>Login</h2>
-            <input type="text" placeholder="Username" required>
-            <input type="password" placeholder="Password" required>
-            <a href="index.html">
-                <button type="submit">Login</button>
-            </a>
-            <a href="#" class="forgot-password">Forgot Password?</a>
+<div class="container login-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-sm-8 col-lg-4">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2 class="mb-0">Welcome Back!</h2>
+                    <p class="mb-0">Login to your account</p>
+                </div>
+                <div class="card-body">
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="email">Email Address:</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                        </div>
+                        
+                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        
+                    </form>
+                    
+                    <div class="text-center mt-3">
+                        <p class="mb-0">Don't have an account? <a href="signup.html">Sign Up</a></p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="copyright">
-    © 2024 FarmEazy | All Rights Reserved
-</div>
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+<!-- Firebase authentication script -->
+<script src="login.bundle.js"></script>
 </body>
 </html>

@@ -3,8 +3,8 @@ const path=require('path')
 module.exports={
     mode:'development',
     entry:{
-    login:'./login.js',
-    profile: './profile.js'
+    login:'./assets/js/login.js',
+    cart:'./assets/js/addcart.js',
 },
     output:{
         path:path.resolve(__dirname),

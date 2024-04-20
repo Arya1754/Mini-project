@@ -1,6 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, onSnapshot } from 'firebase/firestore';
-
+import {
+    getAuth,
+} from 'firebase/auth';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -16,6 +18,7 @@ const firebaseConfig = {
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth();
 
 function getCurrentUserID() {
     const user = auth.currentUser;
@@ -103,6 +106,7 @@ function updatequantity(event) {
 }
 
 function addToCart(event) {
+    console.log(auth.currentUser)
     var button = event.target;
     var productCard = button.closest('.product-card');
     console.log('Product Card:', productCard);
@@ -187,8 +191,36 @@ function addItemToCart(title, pay, imageSrc) {
 
     cartRow.querySelector('.item-close-btn').addEventListener('click', removeItemButton);
 }
+function addToWishlist(event) {
+    var button = event.target;
+    var productCard = button.closest('.product-card');
+    var titleElement = productCard.querySelector('.card-title');
+    var payElement = productCard.querySelector('.price');
+    var imageElement = productCard.querySelector('.card-banner img');
+    var title = titleElement.innerText;
+    var pay = payElement.innerText;
+    var imageSrc = imageElement.src;
+
+    var wishItems = document.querySelectorAll('[data-side-panel="whishlist"] .panel-item');
+    var itemAlreadyInWishlist = false;
+    
+    wishItems.forEach(function (wishItem) {
+        var wishTitle = wishItem.querySelector('.item-title').innerText;
+        if (wishTitle === title) {
+            itemAlreadyInWishlist = true;
+            alert('This item is already in your wishlist.');
+        }
+    });
+
+    if (!itemAlreadyInWishlist) {
+        addItemToWishlistPanel(title, pay, imageSrc);
+        alert('Item added to wishlist.');
+        saveToFirestore(title, pay, imageSrc); // Save to Firestore
+    }
+}
 
 function addItemToWishlistPanel(title, pay, imageSrc) {
+
     const userID = getCurrentUserID();
     addDoc(collection(db, 'wishlist'), {
         userId: userID,
@@ -232,24 +264,58 @@ function addItemToWishlistPanel(title, pay, imageSrc) {
    
     var addToCartButton = wishRow.querySelector('.btn.btn-primary');
     addToCartButton.addEventListener('click', function() {
-        // Handle adding to cart
+        var cartItems = document.querySelectorAll('[data-side-panel="cart"] .panel-item');
+        var itemAlreadyInCart = false;
+        cartItems.forEach(function (cartItem) {
+            var cartTitle = cartItem.querySelector('.item-title').innerText;
+            if (cartTitle === title) {
+                itemAlreadyInCart = true;
+                var confirmed = window.confirm('This item is already in your cart. Do you want to add it again?');
+                if (confirmed) {
+                    var inputElement = cartItem.querySelector('.item-quantity');
+                    var quantity = parseInt(inputElement.value) + 1;
+                    inputElement.value = quantity;
+                    updateCart();
+                }
+            }
+        });
+
+        if (!itemAlreadyInCart) {
+            addItemToCart(title, payNumeric, imageSrc); // Use payNumeric instead of pay
+            var alertMessage = 'The item "' + title + '" has been added to your cart.';
+            alert(alertMessage);
+            wishRow.remove();
+            updateCart();
+            saveToFirestore(title, payNumeric, imageSrc); // Save to Firestore
+        }
     });
 }
 
 function removeFromFirestore(title) {
-    db.collection("cart").where("title", "==", title)
-        .get()
+    const userID = getCurrentUserID();
+
+    const query = db.collection("cart").where("title", "==", title).where("userId", "==", userID);
+
+    query.get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                doc.ref.deleteDoc();
+                deleteDoc(doc.ref)
+                    .then(() => {
+                        console.log("Document successfully deleted!");
+                    })
+                    .catch((error) => {
+                        console.error("Error removing document: ", error);
+                    });
             });
         })
         .catch((error) => {
-            console.error("Error removing document: ", error);
+            console.error("Error getting documents: ", error);
         });
 }
 
+
 function saveToFirestore(title, pay, imageSrc, quantity = 1, subtotal = pay) {
+    console.log(auth.currentUser)
     const userID = getCurrentUserID(); // Get the current user's ID
     if (!userID) {
         console.error("User ID not available");
@@ -292,3 +358,4 @@ function updateCart() {
         subtotalElement.textContent = 'Subtotal      R.s  ' + itemSubtotal.toFixed(2);
     }
 }
+

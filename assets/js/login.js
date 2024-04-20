@@ -7,7 +7,7 @@ import {
     onAuthStateChanged
 } from 'firebase/auth';
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
 const firebaseConfig = {
     apiKey: "AIzaSyB0pGEBA01P1KON0fE1wfKRjejnDj2OCuY",
     authDomain: "miniproject-8c47c.firebaseapp.com",
@@ -29,7 +29,7 @@ function saveUserRole(userId, role) {
     console.log(userId)
     addDoc(collection(db, 'users'), {
         uid: userId,
-        role: role
+        role: role,
     })
     .then((docRef) => {
         console.log('User role saved with ID: ', docRef.id);

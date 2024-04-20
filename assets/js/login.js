@@ -25,18 +25,21 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 //database
-function saveUserRole(userId, role) {
+function saveUserRole(userId, role,fullName) {
     console.log(userId)
     addDoc(collection(db, 'users'), {
         uid: userId,
         role: role,
+        fullname:fullName,
     })
     .then((docRef) => {
         console.log('User role saved with ID: ', docRef.id);
+        window.location.href = 'login.html';
     })
     .catch((error) => {
         console.error('Error saving user role: ', error);
     });
+    
 }
 
 // Signup Form
@@ -49,6 +52,7 @@ if (signupForm) {
         const password = signupForm.password.value;
         const confirmpassword = signupForm.confirmPassword.value;
         const userType = signupForm.userType.value;
+    
         if (password !== confirmpassword) {
             alert("Passwords do not match");
             return; // Prevent form submission if passwords don't match
@@ -58,17 +62,10 @@ if (signupForm) {
             .then((userCredential) => {
                 // Signed up successfully
                 const user = userCredential.user;
-                saveUserRole(user.uid, userType);
-                updateProfile(user, { displayName: fullName })
-                .then(() => {
-                    console.log('User profile updated successfully');
-                })
-                .catch((error) => {
-                    console.error('Error updating user profile:', error.message);
-                });
+                saveUserRole(user.uid, userType,fullName);
                 console.log('User signed up:', user);
                 signupForm.reset();
-                window.location.href = 'login.html';
+              
             })
             .catch((error) => {
                 console.log(email)

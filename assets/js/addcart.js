@@ -1,13 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import {
-    getFirestore ,collection,onSnapshot,
-    addDoc,deleteDoc,doc,
-    query,where,
-    orderBy,serverTimestamp,
-    getDoc,updateDoc
-} from 'firebase/firestore'
-
-document.addEventListener('DOMContentLoaded', function () {
+import { getFirestore, collection, addDoc, onSnapshot } from 'firebase/firestore';
 
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -21,9 +13,30 @@ const firebaseConfig = {
     measurementId: "G-7J80SKPLFV"
   };
 
-
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+function getCurrentUserID() {
+    const user = auth.currentUser;
+    if (user) {
+        return user.uid;
+    } else {
+     
+        return null; 
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+
+const q = collection(db, 'cart');
+onSnapshot(q, (snapshot) => {
+    let cart = [];
+    snapshot.docs.forEach((doc) => {
+        cart.push({...doc.data(), id: doc.id });
+    });
+    console.log(cart);
+    });
 
     var addToCartButtons = document.querySelectorAll('.btn.btn-primary');
     var addToWishlistButtons = document.querySelectorAll('.product-btn');
@@ -51,6 +64,7 @@ const db = getFirestore(app);
 
     updateCart(); 
 });
+
 
 function purchase(event) {
     var pbutton = event.target;
@@ -131,6 +145,22 @@ function addToCart(event) {
 }
 
 function addItemToCart(title, pay, imageSrc) {
+    const userID = getCurrentUserID();
+    db.collection('cart').add({
+        userId: userID,
+        title: title,
+        pay: pay,
+        quantity: 1,
+        subtotal: pay,
+        imageSrc: imageSrc
+    })
+    .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+    })
+    .catch((error) => {
+        console.error("Error adding document: ", error);
+    });
+
     var cartRow = document.createElement('li');
     cartRow.classList.add('panel-item');
     var cartItemList = document.querySelector('[data-side-panel="cart"] .panel-list');
@@ -187,7 +217,7 @@ function addToWishlist(event) {
 
 function addItemToWishlistPanel(title, pay, imageSrc) {
     var payNumeric = parseFloat(pay.replace(/[^\d.]/g, '').replace(/^\.|\.+$/g, ""));
-     var wishRow = document.createElement('li');
+    var wishRow = document.createElement('li');
     wishRow.classList.add('panel-item');
 
     var wishItemList = document.querySelector('[data-side-panel="whishlist"] .panel-list');
@@ -241,12 +271,12 @@ function addItemToWishlistPanel(title, pay, imageSrc) {
         }
     });
 }
-function removeFromFirestore(db,title) {
+function removeFromFirestore(title) {
     db.collection("cart").where("title", "==", title)
         .get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                doc.ref.delete();
+                doc.ref.deleteDoc();
             });
         })
         .catch((error) => {
@@ -254,8 +284,10 @@ function removeFromFirestore(db,title) {
         });
 }
 
-function saveToFirestore(db,title, pay, quantity, subtotal, imageSrc) {
-    db.collection("cart").add({
+function saveToFirestore(title, pay, imageSrc, quantity = 1, subtotal = pay) {
+    const userID = getCurrentUserID();
+    addDoc(collection(db, 'cart'), {
+        userId: userID,
         title: title,
         pay: pay,
         quantity: quantity,

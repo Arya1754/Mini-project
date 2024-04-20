@@ -146,7 +146,7 @@ function addToCart(event) {
 
 function addItemToCart(title, pay, imageSrc) {
     const userID = getCurrentUserID();
-    db.collection('cart').add({
+    addDoc(collection(db, 'cart'), {
         userId: userID,
         title: title,
         pay: pay,
@@ -156,11 +156,13 @@ function addItemToCart(title, pay, imageSrc) {
     })
     .then((docRef) => {
         console.log("Document written with ID: ", docRef.id);
+        updateCart();
     })
     .catch((error) => {
         console.error("Error adding document: ", error);
     });
 
+    // Adding item to UI
     var cartRow = document.createElement('li');
     cartRow.classList.add('panel-item');
     var cartItemList = document.querySelector('[data-side-panel="cart"] .panel-list');
@@ -184,39 +186,24 @@ function addItemToCart(title, pay, imageSrc) {
     cartItemList.appendChild(cartRow);
 
     cartRow.querySelector('.item-close-btn').addEventListener('click', removeItemButton);
-    updateCart();
-}
-
-function addToWishlist(event) {
-    var button = event.target;
-    var productCard = button.closest('.product-card');
-    var titleElement = productCard.querySelector('.card-title');
-    var payElement = productCard.querySelector('.price');
-    var imageElement = productCard.querySelector('.card-banner img');
-    var title = titleElement.innerText;
-    var pay = payElement.innerText;
-    var imageSrc = imageElement.src;
-
-    var wishItems = document.querySelectorAll('[data-side-panel="whishlist"] .panel-item');
-    var itemAlreadyInWishlist = false;
-    
-    wishItems.forEach(function (wishItem) {
-        var wishTitle = wishItem.querySelector('.item-title').innerText;
-        if (wishTitle === title) {
-            itemAlreadyInWishlist = true;
-            alert('This item is already in your wishlist.');
-        }
-    });
-
-    if (!itemAlreadyInWishlist) {
-        addItemToWishlistPanel(title, pay, imageSrc);
-        alert('Item added to wishlist.');
-        saveToFirestore(title, pay, imageSrc); // Save to Firestore
-    }
 }
 
 function addItemToWishlistPanel(title, pay, imageSrc) {
-    var payNumeric = parseFloat(pay.replace(/[^\d.]/g, '').replace(/^\.|\.+$/g, ""));
+    const userID = getCurrentUserID();
+    addDoc(collection(db, 'wishlist'), {
+        userId: userID,
+        title: title,
+        pay: pay,
+        imageSrc: imageSrc
+    })
+    .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+    })
+    .catch((error) => {
+        console.error("Error adding document: ", error);
+    });
+
+    // Adding item to UI
     var wishRow = document.createElement('li');
     wishRow.classList.add('panel-item');
 
@@ -245,32 +232,10 @@ function addItemToWishlistPanel(title, pay, imageSrc) {
    
     var addToCartButton = wishRow.querySelector('.btn.btn-primary');
     addToCartButton.addEventListener('click', function() {
-        var cartItems = document.querySelectorAll('[data-side-panel="cart"] .panel-item');
-        var itemAlreadyInCart = false;
-        cartItems.forEach(function (cartItem) {
-            var cartTitle = cartItem.querySelector('.item-title').innerText;
-            if (cartTitle === title) {
-                itemAlreadyInCart = true;
-                var confirmed = window.confirm('This item is already in your cart. Do you want to add it again?');
-                if (confirmed) {
-                    var inputElement = cartItem.querySelector('.item-quantity');
-                    var quantity = parseInt(inputElement.value) + 1;
-                    inputElement.value = quantity;
-                    updateCart();
-                }
-            }
-        });
-
-        if (!itemAlreadyInCart) {
-            addItemToCart(title, payNumeric, imageSrc); // Use payNumeric instead of pay
-            var alertMessage = 'The item "' + title + '" has been added to your cart.';
-            alert(alertMessage);
-            wishRow.remove();
-            updateCart();
-            saveToFirestore(title, payNumeric, imageSrc); // Save to Firestore
-        }
+        // Handle adding to cart
     });
 }
+
 function removeFromFirestore(title) {
     db.collection("cart").where("title", "==", title)
         .get()
@@ -285,9 +250,14 @@ function removeFromFirestore(title) {
 }
 
 function saveToFirestore(title, pay, imageSrc, quantity = 1, subtotal = pay) {
-    const userID = getCurrentUserID();
+    const userID = getCurrentUserID(); // Get the current user's ID
+    if (!userID) {
+        console.error("User ID not available");
+        return;
+    }
+
     addDoc(collection(db, 'cart'), {
-        userId: userID,
+        userId: userID, // Store the user's ID with the item
         title: title,
         pay: pay,
         quantity: quantity,
@@ -301,6 +271,7 @@ function saveToFirestore(title, pay, imageSrc, quantity = 1, subtotal = pay) {
         console.error("Error adding document: ", error);
     });
 }
+
 
 function updateCart() {
     var cartItems = document.querySelectorAll('[data-side-panel="cart"] .panel-item');

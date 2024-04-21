@@ -6,6 +6,7 @@ module.exports={
     login:'./assets/js/login.js',
     cart:'./assets/js/addcart.js',
     profile:'./assets/js/profile.js',
+    farmerprofile:'./assets/js/farmerprofile.js',
 },
     output:{
         path:path.resolve(__dirname),

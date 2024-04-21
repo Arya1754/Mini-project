@@ -10,4 +10,24 @@ document.addEventListener("DOMContentLoaded", function() {
             window.location.href = './profile.html';
         }
     });
-});
+
+    var fileInput = document.getElementById('image');
+    var file = fileInput.files[0];
+    
+    if (!file) {
+        alert('Please select an image file.');
+        return;
+    }
+
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+        var imgElement = document.createElement('img');
+        imgElement.src = e.target.result;
+        imgElement.alt = 'Uploaded Image';
+
+        var profilePictureDiv = document.getElementById('profile-picture');
+        profilePictureDiv.innerHTML = '';
+        profilePictureDiv.appendChild(imgElement);
+    }; // Added closing curly brace for the onload function
+}); // Added closing curly brace for the DOMContentLoaded event listener

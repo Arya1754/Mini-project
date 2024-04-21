@@ -5,6 +5,7 @@ module.exports={
     entry:{
     login:'./assets/js/login.js',
     cart:'./assets/js/addcart.js',
+    profile:'./assets/js/profile.js',
 },
     output:{
         path:path.resolve(__dirname),

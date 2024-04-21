@@ -69,14 +69,53 @@ onSnapshot(q, (snapshot) => {
 
 function purchase(event) {
     var pbutton = event.target;
-    var parentLink = pbutton.parentElement;
     var confirmed = window.confirm('DO YOU WANT TO PROCEED WITH THE ORDER?');
 
-    if (confirmed && parentLink.tagName === 'A') {
-        parentLink.href = './cart.html';
-        window.location.href = parentLink.href;
+    if (confirmed) {
+        // Save items in the cart as a single order in the "my orders" collection
+        const userID = getCurrentUserID();
+        const orderData = {};
+        const cartItems = document.querySelectorAll('[data-side-panel="cart"] .panel-item');
+
+        cartItems.forEach((cartItem, index) => {
+            const title = cartItem.querySelector('.item-title').innerText;
+            const pay = parseFloat(cartItem.querySelector('.price').textContent);
+            const quantity = parseInt(cartItem.querySelector('.item-quantity').value);
+            const imageSrc = cartItem.querySelector('.item-banner img').src;
+            const subtotal = pay * quantity;
+
+            // Store item details in the orderData object with unique keys
+            orderData[`item${index}`] = {
+                title: title,
+                pay: pay,
+                quantity: quantity,
+                subtotal: subtotal,
+                imageSrc: imageSrc
+            };
+        });
+
+        // Add a new document with a unique ID to the "my orders" collection
+        const orderRef = collection(db, 'my orders'); // Correctly reference the collection
+        addDoc(orderRef, {
+            userId: userID,
+            items: orderData
+        }).then((docRef) => {
+            console.log("Order saved successfully with ID: ", docRef.id);
+            // Redirect to a success page or perform any other action
+             window.location.href = 'cart.html';
+        }).catch((error) => {
+            console.error("Error saving order: ", error);
+        });
+        
+
+        // Clear the cart after placing the order
+        const cartList = document.querySelector('[data-side-panel="cart"] .panel-list');
+        cartList.innerHTML = '';
+        updateCart();
     }
 }
+
+
 
 function removeItemButton(event) {
     var buttonClick = event.target;

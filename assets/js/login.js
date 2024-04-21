@@ -25,12 +25,15 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 //database
-function saveUserRole(userId, role,fullName) {
+function saveUserRole(userId, role,fullName,phoneNo,address,email) {
     console.log(userId)
     addDoc(collection(db, 'users'), {
         uid: userId,
         role: role,
         fullname:fullName,
+        phone:phoneNo,
+        address:address,
+        email:email,
     })
     .then((docRef) => {
         console.log('User role saved with ID: ', docRef.id);
@@ -48,6 +51,8 @@ if (signupForm) {
     signupForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const fullName= signupForm.fullName.value;
+        const phoneNo = signupForm.phoneNo.value; 
+        const address = signupForm.address.value;
         const email = signupForm.email.value;
         const password = signupForm.password.value;
         const confirmpassword = signupForm.confirmPassword.value;
@@ -62,7 +67,8 @@ if (signupForm) {
             .then((userCredential) => {
                 // Signed up successfully
                 const user = userCredential.user;
-                saveUserRole(user.uid, userType,fullName);
+                const userEmail = userCredential.user.email; // Retrieve the email from userCredential
+                saveUserRole(user.uid, userType, fullName, phoneNo, address, userEmail);
                 console.log('User signed up:', user);
                 signupForm.reset();
               

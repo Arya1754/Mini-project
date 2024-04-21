@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, getDoc, query, where, getDocs } from 'firebase/firestore';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, onAuthStateChanged,signOut  } from 'firebase/auth';
 
 // Initialize Firebase app
 const firebaseConfig = {
@@ -64,4 +64,21 @@ onAuthStateChanged(auth, (user) => {
     // User is not logged in, redirect to login page or handle accordingly
     window.location.href = 'login.html';
   }
+
+  //logout
+  const logoutButton = document.querySelector('.logoutButton');
+    if (logoutButton) {
+        
+        logoutButton.addEventListener('click', function() {
+            const auth = getAuth();
+            signOut(auth)
+                .then(() => {
+                    console.log('User signed out successfully.');
+                    window.location.href = 'login.html'; 
+                })
+                .catch((error) => {
+                    console.error('Error signing out:', error.message);
+                });
+        });
+    }
 });

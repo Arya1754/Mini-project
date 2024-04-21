@@ -111,19 +111,18 @@ async function getUserRole(userId) {
             // Assuming there's only one document per user, but you might need additional logic if multiple documents exist
             const doc = querySnapshot.docs[0];
             console.log('User role:', doc.data().role);
-
+           
             // Redirect user based on role
             if (doc.data().role === 'farmer') {
                 window.location.href = 'farmerdashboard.html';
             } 
-            else (doc.data().role === 'customer')
-            {
+            else if (doc.data().role === 'customer') {
                 window.location.href = 'index.html';
             } 
         } 
+
         else {
             console.log('User document not found');
-            // Handle case where user document doesn't exist
         }
     } catch (error) {
         console.error('Error getting user document:', error);

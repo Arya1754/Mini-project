@@ -1,10 +1,26 @@
+footer {
+    background-color: green;
+    color: white;
+    text-align: center; /* Correcting 'middle' to 'center' */
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    /* height: 80px; */
+    line-height: 30px; /* Adding line-height to vertically center the text */
+}
+
 
 .container {
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+    /* padding: 20px; */
     display: flex;
     flex-direction: row;
+    position: relative;
+    margin: 0 auto;
+}
+.container .info{
+    margin: 0 auto;
+
 }
 
 .info {
@@ -12,10 +28,18 @@
     align-items: flex-start; 
     justify-content: center; 
     margin-bottom: 40px;
-    margin-right: 10%; 
-    width: 50%; 
+    /* margin-right: 10%;  */
+    width: 100%; 
 }
 
+
+/* Add the following styles for responsiveness */
+@media screen and (min-width: 768px) {
+    .info {
+        margin-right: 10%; /* Add right margin only on larger screens */
+        width: 50%; /* Take up 50% width on larger screens */
+    }
+}
 
 
 /* Profile Section */
@@ -24,7 +48,8 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 100%; 
+    width: 80%; 
+    height: 95%;
     flex-shrink: 0; 
     text-align: center; 
 }
@@ -33,7 +58,7 @@
 
 .profile-section {
     background-color: #05C26A;
-    padding: 20px;
+    padding: 5px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
@@ -157,6 +182,7 @@ margin-top: 0%;
 .logoutButton{
     background-color: black;
 }
+
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {

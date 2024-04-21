@@ -1,6 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, getDoc, setDoc } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { getFirestore, collection, getDocs, doc,setDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyB0pGEBA01P1KON0fE1wfKRjejnDj2OCuY",
@@ -10,28 +9,28 @@ const firebaseConfig = {
     messagingSenderId: "178975701060",
     appId: "1:178975701060:web:b4a5a45a02c0bdfc2c6411",
     measurementId: "G-7J80SKPLFV"
-  };
+};
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const db = getFirestore(app);
 
 async function fetchAndDisplayData() {
     const querySnapshot = await getDocs(collection(db, "my orders"));
     const tableBody = document.querySelector('table tbody');
+    tableBody.innerHTML = ''; // Clear existing rows before appending new ones
 
-    querySnapshot.forEach(doc => {
+    querySnapshot.forEach(async (doc) => {
         const data = doc.data();
         const row = `
             <tr>
                 <td>${data.date}</td>
                 <td>${data.customerDetails}</td>
-                <td>${data.description}</td>
+                <td>${data.title}</td>
                 <td>${data.quantity}</td>
-                <td>$${data.price}</td>
-                <td>$${data.total}</td>
+                <td>R.s${data.pay}</td>
+                <td>R.s${data.subtotal}</td>
                 <td>
-                    <select onchange="changeStatus(this)" data-doc-id="${doc.id}">
+                    <select onchange="changeStatus(this, '${doc.id}')">
                         <option value="Pending" ${data.status === 'Pending' ? 'selected' : ''}>Pending</option>
                         <option value="Completed" ${data.status === 'Completed' ? 'selected' : ''}>Completed</option>
                     </select>
@@ -42,61 +41,15 @@ async function fetchAndDisplayData() {
     });
 }
 
-
 document.addEventListener('DOMContentLoaded', function() {
     fetchAndDisplayData();
 });
 
-
-
-
-
-function changeStatus(selectElement) {
-    const row = selectElement.closest('tr'); // Get the row of the select element
+function changeStatus(selectElement, docId) {
     const status = selectElement.value;
-
-    if (status === 'Completed') {
-        row.style.backgroundColor = 'lightgrey'; // Change row color to light grey
-        row.setAttribute('data-status', 'completed'); // Update data attribute if needed
-    } else {
-        row.style.backgroundColor = ''; // Reset to default color
-        row.setAttribute('data-status', 'pending'); // Update data attribute if needed
-    }
+    // Update the status in Firestore
+    const orderRef = doc(db, "my orders", docId);
+    setDoc(orderRef, { status }, { merge: true })
+        .then(() => console.log("Status updated successfully"))
+        .catch((error) => console.error("Error updating status:", error));
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Apply initial color based on status for existing rows when page loads
-    const rows = document.querySelectorAll('table tbody tr');
-    rows.forEach(row => {
-        const select = row.querySelector('select');
-        const status = select.value;
-        if (status === 'Completed') {
-            row.style.backgroundColor = 'lightgrey';
-        }
-    });
-});
-
-//dynamic row handling
-function addNewRow(data) {
-    const tbody = document.querySelector('table tbody');
-    const newRow = `
-        <tr data-status="pending">
-            <td>${data.date}</td>
-            <td>${data.customerDetails}</td>
-            <td>${data.description}</td>
-            <td>${data.quantity}</td>
-            <td>$${data.price}</td>
-            <td>$${data.total}</td>
-            <td>
-                <select onchange="changeStatus(this)">
-                    <option value="Pending">Pending</option>
-                    <option value="Completed">Completed</option>
-                </select>
-            </td>
-        </tr>
-    `;
-    tbody.innerHTML += newRow;
-}
-
-
-

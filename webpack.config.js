@@ -9,6 +9,7 @@ module.exports={
     farmerprofile:'./assets/js/farmerprofile.js',
     inventory:'./assets/js/inventory.js',
     mytransactions: './assets/js/transactions.js',
+    dashboard:'./assets/js/dashboard.js',
 },
     output:{
         path:path.resolve(__dirname),

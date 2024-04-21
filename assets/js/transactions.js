@@ -15,41 +15,43 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 async function fetchAndDisplayData() {
-    const querySnapshot = await getDocs(collection(db, "my orders"));
-    const tableBody = document.querySelector('table tbody');
-    tableBody.innerHTML = ''; // Clear existing rows before appending new ones
+    try {
+        const querySnapshot = await getDocs(collection(db, 'my orders'));
+        const tableBody = document.querySelector('tbody');
+        const transactions = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+        console.log(transactions)
+        // Clear existing table rows
+        tableBody.innerHTML = '';
 
-    querySnapshot.forEach(async (doc) => {
-        const data = doc.data();
-        const row = `
-            <tr>
-                <td>${data.date}</td>
-                <td>${data.customerDetails}</td>
-                <td>${data.title}</td>
-                <td>${data.quantity}</td>
-                <td>R.s${data.pay}</td>
-                <td>R.s${data.subtotal}</td>
-                <td>
-                    <select onchange="changeStatus(this, '${doc.id}')">
-                        <option value="Pending" ${data.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                        <option value="Completed" ${data.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                    </select>
-                </td>
-            </tr>
-        `;
-        tableBody.innerHTML += row;
-    });
+        // Iterate through each document and append to the table
+        querySnapshot.forEach(doc =>
+            {
+            const order = doc.data();
+
+            const userId = order.userId;
+            const items = Object.values(order.items).map(item => item.title).join(', '); // Extracting titles from items
+            const quantity = Object.values(order.items).reduce((acc, item) => acc + item.quantity, 0);
+            const total = Object.values(order.items).reduce((acc, item) => acc + (item.subtotal || (item.pay * item.quantity)), 0); // Calculate total
+           
+
+            // Create a new table row
+            const row = document.createElement('tr');
+
+            // Populate the row with data
+            row.innerHTML = `
+                <td>${userId }</td>
+                <td>${items}</td>
+                <td>${quantity}</td>
+                <td>${total}</td>
+            `;
+
+            // Append the row to the table body
+            tableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
 }
-
 document.addEventListener('DOMContentLoaded', function() {
     fetchAndDisplayData();
 });
-
-function changeStatus(selectElement, docId) {
-    const status = selectElement.value;
-    // Update the status in Firestore
-    const orderRef = doc(db, "my orders", docId);
-    setDoc(orderRef, { status }, { merge: true })
-        .then(() => console.log("Status updated successfully"))
-        .catch((error) => console.error("Error updating status:", error));
-}

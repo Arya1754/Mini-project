@@ -8,6 +8,7 @@ module.exports={
     profile:'./assets/js/profile.js',
     farmerprofile:'./assets/js/farmerprofile.js',
     inventory:'./assets/js/inventory.js',
+    mytransactions: './assets/js/transactions.js',
 },
     output:{
         path:path.resolve(__dirname),

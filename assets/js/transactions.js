@@ -19,27 +19,30 @@ async function fetchAndDisplayData() {
         const querySnapshot = await getDocs(collection(db, 'my orders'));
         const tableBody = document.querySelector('tbody');
         const transactions = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-        console.log(transactions)
+
         // Clear existing table rows
         tableBody.innerHTML = '';
 
+        let totalSales = 0; // Variable to store total sales
+
         // Iterate through each document and append to the table
-        querySnapshot.forEach(doc =>
-            {
+        querySnapshot.forEach(doc => {
             const order = doc.data();
 
             const userId = order.userId;
             const items = Object.values(order.items).map(item => item.title).join(', '); // Extracting titles from items
             const quantity = Object.values(order.items).reduce((acc, item) => acc + item.quantity, 0);
             const total = Object.values(order.items).reduce((acc, item) => acc + (item.subtotal || (item.pay * item.quantity)), 0); // Calculate total
-           
+
+            // Add to total sales
+            totalSales += total;
 
             // Create a new table row
             const row = document.createElement('tr');
 
             // Populate the row with data
             row.innerHTML = `
-                <td>${userId }</td>
+                <td>${userId}</td>
                 <td>${items}</td>
                 <td>${quantity}</td>
                 <td>${total}</td>
@@ -48,10 +51,18 @@ async function fetchAndDisplayData() {
             // Append the row to the table body
             tableBody.appendChild(row);
         });
+
+        const totalSalesElement = document.querySelector('.summary .total-sales');
+        if (totalSalesElement) {
+            totalSalesElement.textContent = `Total Sales: R.s  ${totalSales}`;
+        } else {
+            console.error('Total Sales element not found.');
+        }
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 }
+
 document.addEventListener('DOMContentLoaded', function() {
     fetchAndDisplayData();
 });

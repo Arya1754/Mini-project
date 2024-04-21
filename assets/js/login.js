@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc ,doc,getDocs,query,where} from 'firebase/firestore';
 import {
     getAuth,
     createUserWithEmailAndPassword,
@@ -84,8 +84,8 @@ if (signupForm) {
 
 // Login Form
 const loginForm = document.getElementById('loginForm');
-if (loginForm){
-    loginForm.addEventListener('submit', (e) => {
+if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = loginForm.email.value;
         const password = loginForm.password.value;
@@ -94,19 +94,40 @@ if (loginForm){
             .then((userCredential) => {
                 const user = userCredential.user;
                 console.log('User logged in:', user);
-                loginForm.reset();
-                window.location.href = 'index.html';
+                // Fetch user role after login
+                getUserRole(user.uid);
             })
             .catch((error) => {
-                console.log(email)
-                console.log(error)
                 console.error('Error logging in:', error.message);
             });
     });
-    
-  }
+}
+async function getUserRole(userId) {
+    try {
+        const q = query(collection(db, "users"), where("uid", "==", userId)); // Query based on "uid"
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+            // Assuming there's only one document per user, but you might need additional logic if multiple documents exist
+            const doc = querySnapshot.docs[0];
+            console.log('User role:', doc.data().role);
 
-
+            // Redirect user based on role
+            if (doc.data().role === 'farmer') {
+                window.location.href = 'farmerdashboard.html';
+            } else if (doc.data().role === 'customer') {
+                window.location.href = 'index.html';
+            } else {
+                // Handle other roles or no role scenario
+            }
+        } else {
+            console.log('User document not found');
+            // Handle case where user document doesn't exist
+        }
+    } catch (error) {
+        console.error('Error getting user document:', error);
+    }
+}
 
 // // Auth State Change
 // onAuthStateChanged(auth, (user) => {

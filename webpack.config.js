@@ -7,7 +7,6 @@ module.exports={
     cart:'./assets/js/addcart.js',
     profile:'./assets/js/profile.js',
     farmerprofile:'./assets/js/farmerprofile.js',
-    feedback:'./assets/js/feedback.js',
 },
     output:{
         path:path.resolve(__dirname),

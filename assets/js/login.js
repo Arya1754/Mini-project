@@ -115,12 +115,13 @@ async function getUserRole(userId) {
             // Redirect user based on role
             if (doc.data().role === 'farmer') {
                 window.location.href = 'farmerdashboard.html';
-            } else if (doc.data().role === 'customer') {
+            } 
+            else (doc.data().role === 'customer')
+            {
                 window.location.href = 'index.html';
-            } else {
-                // Handle other roles or no role scenario
-            }
-        } else {
+            } 
+        } 
+        else {
             console.log('User document not found');
             // Handle case where user document doesn't exist
         }

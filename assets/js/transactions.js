@@ -54,7 +54,7 @@ async function fetchAndDisplayData() {
 
         const totalSalesElement = document.querySelector('.summary .total-sales');
         if (totalSalesElement) {
-            totalSalesElement.textContent = `Total Sales: R.s  ${totalSales}`;
+            totalSalesElement.textContent = `Total Sales: Rs  ${totalSales}`;
         } else {
             console.error('Total Sales element not found.');
         }

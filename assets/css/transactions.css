@@ -6,11 +6,23 @@ main {
     border-radius: 8px;
 }
 
+
 .dashboard div {
     margin: 10px 0;
 }
 .summary {
     padding: 10px;
+    font-size: 22;
+    .total-sales{
+        display: flex;
+    }
+}
+.summary .total-sales{
+    padding: 20px;
+    margin-right: 1150px;
+    font-size: 25;
+    font-weight: bold;
+    color:#04AA6D;
 }
 
 .actions {
